@@ -1,0 +1,21 @@
+
+PREPROCESSING SUMMARY
+=====================
+Raw data                : 614 rows x 13 columns
+Duplicates removed      : 0
+Final ML dataset        : 614 rows x 11 columns (incl. target)
+
+Q1. Most relevant features (Random Forest top 3): credit_history, emi_to_income, log_total_income
+Q2. Variables encoded   : gender, married, education, self_employed, loan_status (target), property_area (one-hot)
+Q3. Variables scaled    : log_total_income, log_loan_amount, log_emi, log_balance_income, emi_to_income, loan_term_months (RobustScaler)
+Q4. Redundant / correlated: 6 raw money columns superseded by transformed versions;
+    correlated pairs (|r|>0.8) dropped: log_balance_income: |r|=0.99 with log_total_income (lower importance); log_emi: |r|=0.88 with log_loan_amount (lower importance)
+Q5. Missing values      : categorical -> mode; credit_history & loan_term -> mode; loan_amount -> median.
+    Outliers: log transform + IQR capping, no rows deleted.
+Q6. Techniques that improved quality: imputation, type fixes, log transform (skew reduction),
+    outlier capping, encoding, robust scaling, redundancy removal.
+Q7. Ready for ML?       : Yes. 10 numeric features, 0 missing values, target encoded.
+    Smoke-test ROC-AUC (Logistic Regression, 5-fold CV): 0.771
+    vs baseline 0.5.
+Dropped features        : applicant_income, coapplicant_income, loan_amount, total_income, emi, balance_income, log_balance_income, log_emi, gender, education, self_employed, credit_history_missing
+Selected features       : married, dependents, loan_term_months, credit_history, has_coapplicant, emi_to_income, log_total_income, log_loan_amount, property_area_Semiurban, property_area_Urban
